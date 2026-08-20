@@ -1,0 +1,7 @@
+pymongo[encryption]>=4.7
+matplotlib>=3.8
+pandas>=2.2
+faker>=24.0
+python-dotenv>=1.0
+requests>=2.31
+certifi>=2024.2.2

@@ -1,0 +1,54 @@
+# Free, open-source ops monitoring for the Module 1 (HA/failover) demo:
+# mongodb_exporter scrapes Atlas via the standard MongoDB wire protocol,
+# Prometheus stores the time series, Grafana visualizes it. No Atlas Charts,
+# no paid Grafana plugin — just the pattern most shops already run.
+#
+# Setup:
+#   cp .env.example .env   # fill in ATLAS_URI (needs at least clusterMonitor role)
+#   docker compose up -d
+#   open http://localhost:3000  (admin / admin, change on first login)
+#   Grafana → Dashboards → New → Import → dashboard ID 11159 or 7373
+#   (both are official community MongoDB/Prometheus-exporter dashboards —
+#   see README.md in this folder for details)
+
+services:
+  mongodb_exporter:
+    image: percona/mongodb_exporter:0.44
+    restart: unless-stopped
+    env_file:
+      - .env
+    command:
+      - "--mongodb.uri=${ATLAS_URI}"
+      - "--collect-all"
+      - "--web.listen-address=:9216"
+    ports:
+      - "9216:9216"
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mongodb_exporter
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  prometheus-data:
+  grafana-data:
