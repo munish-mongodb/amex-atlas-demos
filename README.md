@@ -11,8 +11,17 @@ first code cell detects which environment it's in and adapts.
 
 ## Run in Colab
 
-Click a badge, or open any notebook directly:
-`https://colab.research.google.com/github/<owner>/<repo>/blob/main/<notebook>.ipynb`
+Click a badge to open a notebook directly in Colab — no local setup needed:
+
+| Notebook | Colab |
+|----------|-------|
+| 00 · Setup & Sample Data | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/munish-mongodb/amex-atlas-demos/blob/main/00_setup_and_sample_data.ipynb) |
+| Module 1 · HA Failover | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/munish-mongodb/amex-atlas-demos/blob/main/01_module1_ha_failover.ipynb) |
+| Module 2 · Millisecond Analytics | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/munish-mongodb/amex-atlas-demos/blob/main/02_module2_millisecond_analytics.ipynb) |
+| Module 3 · Governed Indexing | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/munish-mongodb/amex-atlas-demos/blob/main/03_module3_governed_indexing.ipynb) |
+| Module 4 · Eventing & Vector Search | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/munish-mongodb/amex-atlas-demos/blob/main/04_module4_eventing_vector_search.ipynb) |
+| Bonus · Queryable Encryption | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/munish-mongodb/amex-atlas-demos/blob/main/05_bonus_queryable_encryption.ipynb) |
+| Bonus · Multi-Region & Sharding | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/munish-mongodb/amex-atlas-demos/blob/main/06_bonus_multiregion_and_sharding.ipynb) |
 
 Colab will prompt for your Atlas connection string (nothing is stored in the
 notebook or the repo). See **Colab notes** below for the two things that
