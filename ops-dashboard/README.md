@@ -20,14 +20,31 @@ docker compose up -d
 
 Then:
 1. Open **http://localhost:3000** (`admin` / `admin`, change the password on
-   first login). Prometheus is already provisioned as a data source.
-2. **Dashboards → New → Import**, and load one of these community dashboards
-   by ID (both are built specifically for `mongodb_exporter`'s metric names):
-   - **11159** — MongoDB Prometheus Exporter Overview
-   - **7373** — MongoDB ReplSet Dashboard (replication lag, member state)
-3. Run `01_module1_ha_failover.ipynb` and trigger Test Failover — watch the
-   primary/secondary roles flip and replication lag spike briefly on the
-   ReplSet dashboard while it happens.
+   first login). Prometheus is already provisioned as a data source, and a
+   **"MongoDB ReplSet — AMEX Ops Dashboard"** is auto-provisioned and shows
+   up on the home dashboard list — no manual import needed.
+2. Run `01_module1_ha_failover.ipynb` and trigger Test Failover — watch the
+   primary/secondary roles flip in the "Replica Set Member State" table and
+   replication staleness spike briefly on the timeseries panel while it
+   happens.
+
+### Why a hand-built dashboard instead of importing one from grafana.com
+
+Went looking for an existing community dashboard first — every candidate
+that looked plausible (IDs 7373, 11159, 12079, 7353, 7359, including two
+literally published by Percona's own PMM project) turned out to be built
+against an older/different metric-naming generation. `percona/mongodb_exporter`
+0.44 exports **raw serverStatus-mirrored names** (`mongodb_ss_connections`,
+`mongodb_ss_opcounters`, `mongodb_members_state`, `mongodb_myState`, ...),
+not the older curated names (`mongodb_op_counters_total`,
+`mongodb_mongod_replset_my_state`, ...) those dashboards expect. They'd have
+imported without error and then shown "No data" on every panel — worse than
+an obvious failure, since it looks like it worked. So `mongodb-replset.json`
+here is hand-built and every panel query was checked directly against
+Prometheus (`/api/v1/query`) against this exact cluster before being wired
+into the dashboard. If you add panels, use `curl localhost:9216/metrics` to
+check the exact metric/label names first rather than assuming a naming
+convention from an older exporter version or a different dashboard.
 
 ## What this covers vs. doesn't
 

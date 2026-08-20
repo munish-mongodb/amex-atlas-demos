@@ -7,9 +7,10 @@
 #   cp .env.example .env   # fill in ATLAS_URI (needs at least clusterMonitor role)
 #   docker compose up -d
 #   open http://localhost:3000  (admin / admin, change on first login)
-#   Grafana → Dashboards → New → Import → dashboard ID 11159 or 7373
-#   (both are official community MongoDB/Prometheus-exporter dashboards —
-#   see README.md in this folder for details)
+#   A "MongoDB ReplSet — AMEX Ops Dashboard" is auto-provisioned and appears
+#   on the home page. It's hand-built against this exact exporter version's
+#   metric names (mongodb_ss_*, mongodb_members_*) — see README.md for why
+#   pre-built community dashboards on grafana.com didn't work here.
 
 services:
   mongodb_exporter:
@@ -19,11 +20,20 @@ services:
       - .env
     command:
       - "--mongodb.uri=${ATLAS_URI}"
-      - "--collect-all"
       - "--web.listen-address=:9216"
       # Atlas SRV URIs resolve to multiple hosts (a replica set) — direct
       # connect (the exporter's default) can't be used against those.
       - "--no-mongodb.direct-connect"
+      # Deliberately NOT --collect-all: this cluster has other sample
+      # databases on it, and the collstats/indexstats collectors fan out
+      # $collStats/$indexStats calls across every collection in every
+      # database, which exhausted the connection pool and starved the
+      # collector that actually matters below. diagnosticdata +
+      # replicasetstatus give everything the Module 1 HA story needs
+      # (replication lag, primary/secondary state, op counters,
+      # connections) without the fan-out.
+      - "--collector.diagnosticdata"
+      - "--collector.replicasetstatus"
     ports:
       - "9216:9216"
 
@@ -46,6 +56,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana-provisioning/dashboard-json:/etc/grafana/dashboard-json:ro
       - grafana-data:/var/lib/grafana
     ports:
       - "3000:3000"
