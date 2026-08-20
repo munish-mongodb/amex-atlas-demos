@@ -21,6 +21,9 @@ services:
       - "--mongodb.uri=${ATLAS_URI}"
       - "--collect-all"
       - "--web.listen-address=:9216"
+      # Atlas SRV URIs resolve to multiple hosts (a replica set) — direct
+      # connect (the exporter's default) can't be used against those.
+      - "--no-mongodb.direct-connect"
     ports:
       - "9216:9216"
 
