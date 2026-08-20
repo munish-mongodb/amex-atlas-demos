@@ -71,24 +71,16 @@ Plus two bonus notebooks, not part of the core module flow:
 | `05_bonus_queryable_encryption.ipynb` | Encrypted fields, queryable but unreadable by direct DB access — banking insider-threat story |
 | `06_bonus_multiregion_and_sharding.ipynb` | Cluster topology inspection, shard distribution, multi-region notes (leave-behind, not presented live) |
 
-## On dashboarding: why not Atlas Charts
+## Dashboarding
 
-The original plan called for an Atlas Charts dashboard in Module 2. That's
-swapped out here for two reasons: Charts gets awkward for anything with
-multiple linked/cross-filtered panels, and Grafana is the pattern most shops
-already run. Two pieces cover that ground instead:
-
-- **`ops-dashboard/`** — a free, open-source `mongodb_exporter` → Prometheus
-  → Grafana stack for infrastructure metrics (replication lag,
+- **`ops-dashboard/`** — a `mongodb_exporter` → Prometheus → Grafana stack,
+  fully open source, for infrastructure metrics (replication lag,
   primary/secondary state, connections). Pairs with Module 1's failover
   demo. See `ops-dashboard/README.md`.
 - **Module 2's notebook** — the business-data queries (transaction volume,
-  liquidity) run natively against MongoDB and chart with matplotlib/pandas.
-  Putting *that* data into Grafana too needs a MongoDB data source plugin;
-  Grafana Labs' official one is Enterprise/Cloud Pro+ only, and free
-  community plugins are unsigned and less battle-tested — worth knowing
-  before committing to that path for a real dashboard, not something to
-  paper over with an unverified live-demo integration.
+  liquidity) run natively against MongoDB and chart with matplotlib/pandas —
+  no separate BI tool, no data movement, standard aggregation pipeline
+  underneath.
 
 ## Colab notes
 
@@ -103,9 +95,8 @@ already run. Two pieces cover that ground instead:
   after Colab caches the packages for that session.
 - **Atlas Network Access**: Colab has no fixed IP, so your cluster's IP
   access list needs to allow connections from anywhere (`0.0.0.0/0`) for
-  Colab-run notebooks to connect. Worth being deliberate about that on a
-  cluster used for a banking demo — tighten it back down afterward, or use a
-  dedicated sandbox project for this.
+  Colab-run notebooks to connect. Use a dedicated sandbox project for this,
+  and tighten the access list back down after the session.
 
 ## Presenter notes
 
@@ -114,10 +105,12 @@ already run. Two pieces cover that ground instead:
   running, have it open on a second screen — replication lag and
   primary/secondary role changes are visible there in real time during the
   election.
-- Module 3 is the one most likely to draw a "how does this compare to
-  Percona today" question — Operation Rejection Filters have no real analog
-  in a self-managed MySQL-compatible setup without an external proxy layer
-  (ProxySQL rules, etc.).
+- Module 3 is the one most likely to draw a "doesn't Percona already do
+  this" question. Operation Rejection Filters are a core MongoDB Server 8.0
+  feature, so Percona Server for MongoDB gets it too once it's on 8.0. The
+  differentiator: Query Insights and Performance Advisor surface the bad
+  query shape automatically, and Atlas manages that version upgrade rather
+  than it being a standalone migration project.
 - Module 4's Vector Search section uses a free local embedding model
   (`sentence-transformers`, no API key) so it runs standalone; mention Voyage
   AI as MongoDB's recommended production embedding provider — same index,
