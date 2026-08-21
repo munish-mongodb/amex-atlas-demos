@@ -1,7 +1,7 @@
 # Ops Dashboard — Grafana + Prometheus + mongodb_exporter
 
 Free, open-source infrastructure monitoring for MongoDB Atlas — the pattern
-most shops already run, and the natural pairing for Module 1's failover
+most shops already run, and the natural pairing for Lab 2's failover
 demo: watch replication lag and primary/secondary role changes live while
 Test Failover runs.
 
@@ -21,9 +21,9 @@ docker compose up -d
 Then:
 1. Open **http://localhost:3000** (`admin` / `admin`, change the password on
    first login). Prometheus is already provisioned as a data source, and a
-   **"MongoDB ReplSet — AMEX Ops Dashboard"** is auto-provisioned and shows
+   **"MongoDB ReplSet — Ops Dashboard"** is auto-provisioned and shows
    up on the home dashboard list — no manual import needed.
-2. Run `01_module1_ha_failover.ipynb` and trigger Test Failover — watch the
+2. Run `02_ha_failover.ipynb` and trigger Test Failover — watch the
    primary/secondary roles flip in the "Replica Set Member State" table and
    replication staleness spike briefly on the timeseries panel while it
    happens.
@@ -45,7 +45,7 @@ panels, check exact metric/label names first with
 
 Covers infrastructure/ops health: replication lag, connections, opcounters,
 cache utilization, replica set member state. Business-data dashboards
-(transaction volume by status, liquidity from Module 2) run natively in
+(transaction volume by status, liquidity from Lab 3) run natively in
 that notebook instead — see its intro cell.
 
 ## Teardown

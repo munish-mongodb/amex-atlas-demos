@@ -1,4 +1,4 @@
-# Free, open-source ops monitoring for the Module 1 (HA/failover) demo:
+# Free, open-source ops monitoring for the Lab 2 (HA/failover) demo:
 # mongodb_exporter scrapes Atlas via the standard MongoDB wire protocol,
 # Prometheus stores the time series, Grafana visualizes it. No Atlas Charts,
 # no paid Grafana plugin — just the pattern most shops already run.
@@ -7,7 +7,7 @@
 #   cp .env.example .env   # fill in ATLAS_URI (needs at least clusterMonitor role)
 #   docker compose up -d
 #   open http://localhost:3000  (admin / admin, change on first login)
-#   A "MongoDB ReplSet — AMEX Ops Dashboard" is auto-provisioned and appears
+#   A "MongoDB ReplSet — Ops Dashboard" is auto-provisioned and appears
 #   on the home page. It's hand-built against this exact exporter version's
 #   metric names (mongodb_ss_*, mongodb_members_*) — see README.md for why
 #   pre-built community dashboards on grafana.com didn't work here.
@@ -29,7 +29,7 @@ services:
       # $collStats/$indexStats calls across every collection in every
       # database, which exhausted the connection pool and starved the
       # collector that actually matters below. diagnosticdata +
-      # replicasetstatus give everything the Module 1 HA story needs
+      # replicasetstatus give everything the Lab 2 HA story needs
       # (replication lag, primary/secondary state, op counters,
       # connections) without the fan-out.
       - "--collector.diagnosticdata"
