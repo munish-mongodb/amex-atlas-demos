@@ -1,6 +1,6 @@
 {
   "title": "MongoDB ReplSet — Ops Dashboard",
-  "uid": "amex-mongo-replset",
+  "uid": "banking-demo-mongo-replset",
   "timezone": "browser",
   "schemaVersion": 39,
   "refresh": "5s",
