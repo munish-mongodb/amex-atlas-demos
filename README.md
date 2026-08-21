@@ -71,8 +71,9 @@ to reset to a clean state.
 | 7 | `07_multiregion_and_sharding.ipynb` | Cluster topology, shard distribution, multi-region notes |
 | 8 | `08_stream_processing.ipynb` | Real-time fraud/velocity checks with Atlas Stream Processing |
 
-Labs 1–5 are meant to be run live, in order, in one sitting. Labs 6–8 stand
-alone — run them whenever they're relevant, in any order.
+Labs 1–5 build on each other and are meant to be run in order, in one
+sitting. Labs 6–8 stand alone — run them whenever they're relevant, in any
+order.
 
 ## Dashboarding
 
@@ -101,25 +102,25 @@ alone — run them whenever they're relevant, in any order.
   Colab-run notebooks to connect. Use a dedicated sandbox project for this,
   and tighten the access list back down afterward.
 
-## Notes if you're presenting this live
+## Tips for running each lab
 
 - Lab 2: click **Test Failover** in the Atlas UI while the live plot is
-  running. If `ops-dashboard/` is running, have it open on a second screen —
-  replication lag and primary/secondary role changes are visible there in
-  real time during the election.
-- Lab 4 is the one most likely to draw a "doesn't Percona already do this"
-  question. Operation Rejection Filters are a core MongoDB Server 8.0
-  feature, so Percona Server for MongoDB gets it too once it's on 8.0. The
-  differentiator: Query Insights and Performance Advisor surface the bad
-  query shape automatically, and Atlas manages that version upgrade rather
-  than it being a standalone migration project.
+  running. If `ops-dashboard/` is running, open it alongside — replication
+  lag and primary/secondary role changes show up there in real time during
+  the election.
+- Lab 4 covers ground Percona Server for MongoDB also has: Operation
+  Rejection Filters are a core MongoDB Server 8.0 feature, so Percona gets
+  it too once it's on 8.0. What Atlas adds on top: Query Insights and
+  Performance Advisor surface the bad query shape automatically, and Atlas
+  manages that version upgrade instead of it being a standalone migration
+  project.
 - Lab 5's Vector Search section uses a free local embedding model
-  (`sentence-transformers`, no API key) so it runs standalone; mention
-  Voyage AI as MongoDB's recommended production embedding provider — same
-  index, same query shape, no self-hosted model to manage.
-- Lab 6's local master key is written to `customer-master-key.txt` —
-  clearly a demo-only stand-in for a real KMS. Say so out loud; don't let
-  it look like a recommended production pattern.
-- Re-run Lab 1 between a rehearsal and the real session to reset data. Labs
-  3 and 5 each seed their own collections independently, so they don't
-  strictly depend on Lab 1 having run first.
+  (`sentence-transformers`, no API key) so it runs standalone. MongoDB's
+  recommended path in production is Voyage AI — same index, same query
+  shape, no self-hosted model to manage.
+- Lab 6's local master key is written to `customer-master-key.txt` — a
+  demo-only stand-in for a real KMS, not a pattern to carry into
+  production. Point `kms_providers` at AWS/Azure/GCP KMS instead.
+- Re-run Lab 1 any time to reset the data. Labs 3 and 5 each seed their own
+  collections independently, so they don't strictly depend on Lab 1 having
+  run first.
